@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dibbo Store — your family shop, around the corner</title>
+<meta name="description" content="Dibbo Store: groceries, fresh picks, snacks and home care for the whole family. Home delivery in 2–5 days.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧺</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/styles.css">
+<script src="/static/app.js" defer></script>
+</head>
+<body>
+
+<div class="strip"><span>🧺 Family shop since 2015</span><span>🛵 Home delivery in 2–5 days</span><span>💸 Cash on delivery or bKash</span><span>🤝 Neighbours first</span><span>🧺 Family shop since 2015</span><span>🛵 Home delivery in 2–5 days</span></div>
+
+<header class="topbar">
+  <a class="brand" href="#top" aria-label="Dibbo Store home">
+    <span class="brand-badge">D</span>
+    <span class="brand-words">Dibbo<em>Store</em><small>family shop</small></span>
+  </a>
+  <nav class="mainnav" aria-label="Categories">
+    <a href="#shop" data-cat="All">Shop all</a>
+    <a href="#shop" data-cat="Groceries">Groceries</a>
+    <a href="#shop" data-cat="Fresh">Fresh</a>
+    <a href="#shop" data-cat="Snacks">Snacks</a>
+    <a href="#shop" data-cat="Drinks">Drinks</a>
+    <a href="#shop" data-cat="Home">Home</a>
+    <a href="#shop" data-cat="Care">Care</a>
+  </nav>
+  <div class="topbar-actions">
+    <button id="bellBtn" class="iconbtn" type="button" hidden aria-label="Notifications">🔔<span id="bellCount" class="bell-count" hidden>0</span></button>
+    <button id="accountBtn" class="chipbtn" type="button">Log in</button>
+    <button id="myOrdersBtn" class="chipbtn" type="button" hidden>My orders</button>
+    <button id="userPortalBtn" class="chipbtn chipbtn-user" type="button" hidden>👤 My Account</button>
+    <button id="adminBtn" class="chipbtn chipbtn-owner" type="button" hidden>🛠 Admin</button>
+    <button id="logoutBtn" class="chipbtn" type="button" hidden>Log out</button>
+    <label class="searchbox">
+      <span aria-hidden="true">🔍</span>
+      <input id="searchInput" type="search" placeholder="Find anything…" aria-label="Search products">
+    </label>
+    <button id="cartBtn" class="cartbtn" type="button">🧺 <span id="cartBtnText">Cart</span> <span id="cartCount" class="cart-count">0</span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="kicker">Your neighbourhood family shop 🏡</p>
+      <h1>Everything your family needs, <em>one basket away.</em></h1>
+      <p class="hero-sub">Rice, fresh picks, snacks, home care and more — stocked like we shop for our own family. Order today, delivered to your door in 2–5 days.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#shop">Fill your basket 🧺</a>
+        <button class="btn btn-ghost" id="heroTrackBtn" type="button">Track an order →</button>
+      </div>
+      <p class="hero-note">✓ No payment online needed &nbsp;·&nbsp; ✓ Cash on delivery &nbsp;·&nbsp; ✓ Easy 12h cancellation</p>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-tile t1">🍚</div>
+      <div class="hero-tile t2">🥚</div>
+      <div class="hero-tile t3">🍎</div>
+      <div class="hero-tile t4">🧼</div>
+      <div class="hero-tile t5">🍵</div>
+      <div class="hero-basket">🧺</div>
+      <div class="hero-tag">fresh & homely ✳</div>
+    </div>
+  </section>
+
+  <section class="perks">
+    <div>🏠 <strong>Doorstep delivery</strong><span>2–5 working days</span></div>
+    <div>💰 <strong>Pay at the door</strong><span>Cash or bKash</span></div>
+    <div>♻️ <strong>Easy cancellation</strong><span>within 12 hours</span></div>
+    <div>📞 <strong>Real people</strong><span>we live here too</span></div>
+  </section>
+
+  <section class="delivery-banner">
+    <span class="delivery-emoji" aria-hidden="true">🛵</span>
+    <div>
+      <p class="kicker">HOW DELIVERY WORKS</p>
+      <h2>Order before 6pm, we pack it <em>same day.</em></h2>
+      <p>Delivery estimate: <strong>2 working days</strong> minimum · <strong>5 working days</strong> maximum. Our rider calls you before arriving.</p>
+    </div>
+    <button class="btn btn-ghost" id="deliveryTrackBtn" type="button">Track an order →</button>
+  </section>
+
+  <section class="shop" id="shop">
+    <div class="shop-head">
+      <div>
+        <p class="kicker">TODAY'S SHELVES</p>
+        <h2>Pick your <em>goodies.</em></h2>
+      </div>
+      <span class="shop-total" id="shopTotal"></span>
+    </div>
+    <div class="offer-strip" id="offerStrip" hidden></div>
+    <div class="shop-tools">
+      <div class="catrow" id="catRow" role="group" aria-label="Filter by category"></div>
+      <div class="toolrow">
+        <button class="filter-chip" id="lowStockChip" type="button" aria-pressed="false">🟠 Low stock only</button>
+        <label class="sortlabel">Sort
+          <select id="sortSelect">
+            <option value="featured">Featured</option>
+            <option value="price-low">Price: low → high</option>
+            <option value="price-high">Price: high → low</option>
+            <option value="name">Name A–Z</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="grid" id="grid" aria-live="polite"></div>
+    <p class="empty" id="emptyMsg" hidden>Nothing on this shelf matches — try another search. 🧐</p>
+  </section>
+
+  <section class="story">
+    <div class="story-card">
+      <p class="kicker">OUR LITTLE STORY</p>
+      <h2>A shop run by family, <em>for families.</em></h2>
+      <p>Dibbo Store started as one shelf of rice and oil in our living room. Today we pack every order ourselves — checking dates, choosing fresh stock, and adding a little extra care. When something runs out, we know it the moment it does, so shelves get refilled fast.</p>
+      <p class="story-sign">— The Dibbo family 🧡</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-brand">🧺 <strong>Dibbo Store</strong> — family shop</div>
+  <div>Open every day 8am–10pm · Hotline <strong>01700-000000</strong></div>
+  <div>Cash on delivery · bKash accepted · Free delivery over ৳1500</div>
+</footer>
+
+<!-- cart drawer -->
+<aside class="drawer" id="cartDrawer" aria-label="Your basket" hidden>
+  <div class="drawer-head">
+    <h3>Your basket 🧺</h3>
+    <button class="iconbtn" data-close-drawer type="button" aria-label="Close basket">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot">
+    <div class="bill">
+      <div><span>Items × <b id="billQty">0</b></span><b id="billSubtotal">৳0</b></div>
+      <div><span>Delivery <small>(free over ৳1500)</small></span><b id="billFee">৳60</b></div>
+      <div class="bill-total"><span>To pay</span><strong id="cartTotal">৳0</strong></div>
+    </div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn" type="button">Checkout →</button>
+  </div>
+</aside>
+
+<!-- checkout -->
+<dialog class="modal" id="checkoutModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">ALMOST THERE</p>
+  <h3>Delivery details</h3>
+  <form id="checkoutForm">
+    <label>Full name<input name="name" required maxlength="100" placeholder="e.g. Rahima Akter"></label>
+    <label>Phone<input name="phone" required maxlength="20" placeholder="01XXXXXXXXX"></label>
+    <label>Delivery address<textarea name="address" required maxlength="300" rows="2" placeholder="House, road, area"></textarea></label>
+    <div class="payrow">
+      <label class="payopt"><input type="radio" name="payment" value="cash" checked><span>💵 Cash on delivery</span></label>
+      <label class="payopt"><input type="radio" name="payment" value="bkash"><span>📱 bKash on delivery</span></label>
+    </div>
+    <label>Note (optional)<input name="note" maxlength="300" placeholder="e.g. call before delivery"></label>
+    <label>Coupon code (optional)
+      <div class="couponrow">
+        <input id="couponInput" placeholder="e.g. FAMILY10" maxlength="20">
+        <button class="btn btn-mini btn-ghost" id="couponApply" type="button">Apply</button>
+      </div>
+      <span class="coupon-note" id="couponNote"></span>
+    </label>
+    <p class="form-error" id="checkoutError" hidden></p>
+    <button class="btn btn-primary btn-block" type="submit">Place order · <span id="checkoutTotal">৳0</span></button>
+  </form>
+</dialog>
+
+<!-- confirmation -->
+<dialog class="modal modal-center" id="confirmModal">
+  <p class="confirm-mark" aria-hidden="true">🎉</p>
+  <p class="kicker">ORDER PLACED</p>
+  <h3>Shukriya! It's packed with love.</h3>
+  <p class="modal-sub">Save your order code — you can track it any time. Estimated delivery in 2–5 working days.</p>
+  <p class="order-code" id="confirmCode">DB-0000</p>
+  <div id="confirmBill" class="receipt"></div>
+  <button class="btn btn-ghost" id="confirmTrackBtn" type="button">Track this order →</button>
+  <form method="dialog"><button class="btn btn-primary btn-block">Back to shopping</button></form>
+</dialog>
+
+<!-- track -->
+<dialog class="modal" id="trackModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">ORDER TRACKING</p>
+  <h3>Where's my basket?</h3>
+  <form id="trackForm">
+    <label>Order code<input id="trackCode" required placeholder="DB-1001"></label>
+    <button class="btn btn-primary btn-block" type="submit">Track →</button>
+  </form>
+  <div id="trackResult"></div>
+</dialog>
+
+<!-- account -->
+<dialog class="modal" id="accountModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">WELCOME TO DIBBO</p>
+  <h3 id="accountTitle">Log in</h3>
+  <div class="switchrow">
+    <button class="filter-chip is-active" id="switchLogin" type="button">Log in</button>
+    <button class="filter-chip" id="switchRegister" type="button">New account</button>
+  </div>
+  <form id="accountForm">
+    <label id="nameField" hidden>Full name<input name="name" maxlength="100" autocomplete="name"></label>
+    <label>Email<input name="email" type="email" required autocomplete="email"></label>
+    <label>Password<input name="password" type="password" required minlength="8" autocomplete="current-password" placeholder="min 8 characters"></label>
+    <p class="form-error" id="accountError" hidden></p>
+    <button class="btn btn-primary btn-block" id="accountSubmit" type="submit">Log in →</button>
+  </form>
+  <p class="modal-sub"><a id="forgotLink" href="#">Forgot password?</a></p>
+</dialog>
+
+<!-- forgot password -->
+<dialog class="modal" id="forgotModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">RESET PASSWORD</p>
+  <h3>We'll send you a reset link</h3>
+  <form id="forgotForm">
+    <label>Email<input id="forgotEmail" name="email" type="email" required autocomplete="email"></label>
+    <p class="form-error" id="forgotError" hidden></p>
+    <button class="btn btn-primary btn-block" type="submit">Send reset link →</button>
+  </form>
+  <form method="dialog"><button class="btn btn-ghost btn-block">Back to login</button></form>
+</dialog>
+
+<!-- reset password -->
+<dialog class="modal" id="resetModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">NEW PASSWORD</p>
+  <h3>Enter your reset token and new password</h3>
+  <form id="resetForm">
+    <input type="hidden" id="resetToken" name="token">
+    <label>New password<input id="resetPassword" name="password" type="password" required minlength="8" autocomplete="new-password" placeholder="min 8 characters"></label>
+    <p class="form-error" id="resetError" hidden></p>
+    <button class="btn btn-primary btn-block" type="submit">Update password →</button>
+  </form>
+</dialog>
+
+<!-- my orders -->
+<dialog class="modal modal-wide" id="ordersModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">YOUR ORDERS</p>
+  <h3>Everything you've ordered</h3>
+  <div id="myOrdersList" class="orderlist"></div>
+</dialog>
+
+<!-- report problem -->
+<dialog class="modal" id="complaintModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">SORRY ABOUT THAT</p>
+  <h3>Report a problem</h3>
+  <p class="modal-sub" id="complaintOrder"></p>
+  <form id="complaintForm">
+    <label>What's the problem?
+      <select id="complaintCat"><option value="product">A product (wrong/damaged/missing)</option><option value="delivery">The delivery</option></select>
+    </label>
+    <label>Tell us what happened<textarea id="complaintMsg" rows="4" required minlength="10" maxlength="1000" placeholder="At least 10 characters, please."></textarea></label>
+    <p class="form-error" id="complaintError" hidden></p>
+    <button class="btn btn-primary btn-block" type="submit">Send to owner →</button>
+  </form>
+</dialog>
+
+<!-- ============================================================
+     ADMIN PORTAL
+     ============================================================ -->
+<dialog class="modal modal-wide modal-full" id="adminPortalModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">ADMIN PORTAL 🛠</p>
+  <h3 id="adminPortalTitle">Shop Management</h3>
+  <div class="admin-tabs">
+    <button class="admin-tab is-active" data-admin-tab="dashboard" type="button">📊 Dashboard</button>
+    <button class="admin-tab" data-admin-tab="products" type="button">📦 Products</button>
+    <button class="admin-tab" data-admin-tab="orders" type="button">🧾 Orders</button>
+    <button class="admin-tab" data-admin-tab="offers" type="button">🎟 Offers</button>
+    <button class="admin-tab" data-admin-tab="complaints" type="button">💬 Problems</button>
+    <button class="admin-tab" data-admin-tab="settings" type="button">⚙️ Settings</button>
+  </div>
+
+  <!-- Dashboard -->
+  <section id="adminTab-dashboard" class="admin-tabpanel">
+    <div class="admin-stats-grid" id="adminStatsGrid"></div>
+    
+    <div class="admin-section" id="adminLowStockAlert" hidden>
+      <h4>⚠️ Low Stock Alert</h4>
+      <div id="adminLowStockList"></div>
+    </div>
+    
+    <div class="admin-section">
+      <h4>Recent Orders</h4>
+      <div id="adminRecentOrders" class="recent-orders"></div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="adminTab-products" class="admin-tabpanel" hidden>
+    <div class="panel-head"><h4>Inventory</h4><button class="btn btn-primary" id="addProductBtn" type="button">＋ Add Product</button></div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr>
+          <th></th><th>Product</th><th>Category</th><th>Sell Price</th><th>Cost Price</th><th>Stock</th><th>Low Threshold</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="adminProductsTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Orders -->
+  <section id="adminTab-orders" class="admin-tabpanel" hidden>
+    <div class="panel-head"><h4>All Orders</h4></div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr>
+          <th>Code</th><th>Customer</th><th>Address</th><th>Payment</th><th>Status</th><th>Total</th><th>Date</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="adminOrdersTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Offers -->
+  <section id="adminTab-offers" class="admin-tabpanel" hidden>
+    <div class="panel-head"><h4>Offers & Coupons</h4><button class="btn btn-primary" id="addOfferBtn" type="button">＋ Add Offer</button></div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr>
+          <th>Code</th><th>Type/Value</th><th>Min Basket</th><th>Applies To</th><th>Description</th><th>Usage</th><th>Expires</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="adminOffersTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Complaints -->
+  <section id="adminTab-complaints" class="admin-tabpanel" hidden>
+    <div class="panel-head"><h4>Reported Problems</h4></div>
+    <div class="table-wrap">
+      <table class="admin-table">
+        <thead><tr>
+          <th>Order</th><th>Customer</th><th>Type</th><th>Message</th><th>Reported</th><th>Status</th><th>Actions</th>
+        </tr></thead>
+        <tbody id="adminComplaintsTable"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Settings -->
+  <section id="adminTab-settings" class="admin-tabpanel" hidden>
+    <div class="panel-head"><h4>Shop Settings</h4></div>
+    <form id="adminSettingsForm" class="settings-form">
+      <div class="settings-grid">
+        <label>Delivery Fee (৳)<input id="settingDeliveryFee" type="number" min="0" step="1" required></label>
+        <label>Free Delivery Over (৳)<input id="settingFreeOver" type="number" min="0" step="1" required></label>
+        <label>Default Low Stock Threshold<input id="settingLowStock" type="number" min="0" step="1" required></label>
+      </div>
+      <button class="btn btn-primary" type="submit">Save Settings</button>
+    </form>
+  </section>
+</dialog>
+
+<!-- Admin Product Modal -->
+<dialog class="modal modal-wide" id="adminProductModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">PRODUCT</p>
+  <h3 id="adminProductModalTitle">Add Product</h3>
+  <form id="adminProductForm" class="form-grid">
+    <label>SKU<input name="sku" required placeholder="GRV-010" maxlength="20"></label>
+    <label>Name<input name="name" required placeholder="Product Name" maxlength="100"></label>
+    <label>Category<select name="category" required>
+      <option value="Groceries">Groceries</option>
+      <option value="Fresh">Fresh</option>
+      <option value="Snacks">Snacks</option>
+      <option value="Drinks">Drinks</option>
+      <option value="Home">Home</option>
+      <option value="Care">Care</option>
+    </select></label>
+    <label>Price (৳)<input name="price" type="number" min="0.01" step="0.01" required></label>
+    <label>Cost Price (৳)<input name="cost_price" type="number" min="0" step="0.01" value="0" required></label>
+    <label>Stock<input name="stock" type="number" min="0" step="1" required value="0"></label>
+    <label>Low Stock Threshold<input name="low_stock_threshold" type="number" min="0" step="1" value="5"></label>
+    <label>Emoji<input name="emoji" maxlength="8" placeholder="🛍️"></label>
+    <label>3D Model Type<select name="model_type">
+      <option value="bag">📦 Bag</option>
+      <option value="box">📦 Box</option>
+      <option value="bottle">🍾 Bottle</option>
+      <option value="jar">🫙 Jar</option>
+      <option value="fruit">🍎 Fruit</option>
+      <option value="veg">🥦 Vegetable</option>
+      <option value="tube">🪥 Tube</option>
+      <option value="">Auto-detect</option>
+    </select></label>
+    <label>Description<textarea name="blurb" maxlength="200" rows="2" placeholder="Short description..."></textarea></label>
+    <label class="checkbox-label"><input name="active" type="checkbox" checked> Active / Visible</label>
+    <button class="btn btn-primary btn-block" type="submit">Save Product</button>
+  </form>
+</dialog>
+
+<!-- Admin Offer Modal -->
+<dialog class="modal modal-wide" id="adminOfferModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">OFFER</p>
+  <h3 id="adminOfferModalTitle">Add Offer</h3>
+  <form id="adminOfferForm" class="form-grid">
+    <label>Code<input name="code" required placeholder="FESTIVE15" maxlength="20"></label>
+    <label>Type<select name="kind" required>
+      <option value="percent">Percent % off</option>
+      <option value="flat">Flat ৳ off</option>
+    </select></label>
+    <label>Value<input name="value" type="number" min="0.01" step="0.01" required placeholder="15"></label>
+    <label>Min Basket (৳)<input name="min_total" type="number" min="0" step="1" value="0"></label>
+    <label>Applies To<select name="applies" id="adminOfferApplies" required></select></label>
+    <label>Expires At<input name="expires_at" type="date"></label>
+    <label>Usage Limit<input name="usage_limit" type="number" min="1" step="1" placeholder="Leave empty for unlimited"></label>
+    <label>Description<input name="description" maxlength="160" placeholder="e.g. 15% off everything this Eid"></label>
+    <label class="checkbox-label"><input name="active" type="checkbox" checked> Active</label>
+    <button class="btn btn-primary btn-block" type="submit">Save Offer</button>
+  </form>
+</dialog>
+
+<!-- Admin Restock Modal -->
+<dialog class="modal" id="adminRestockModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">QUICK RESTOCK</p>
+  <h3>Add stock to <span id="adminRestockName"></span></h3>
+  <input type="hidden" id="adminRestockSku">
+  <form id="adminRestockForm">
+    <label>Quantity to add<input id="adminRestockQty" name="qty" type="number" min="1" step="1" value="25" required></label>
+    <button class="btn btn-primary btn-block" type="submit">Restock →</button>
+  </form>
+</dialog>
+
+<!-- Order Detail Modal -->
+<dialog class="modal modal-wide" id="orderDetailModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">ORDER DETAIL</p>
+  <h3 id="orderDetailCode"></h3>
+  <div id="orderDetailContent"></div>
+</dialog>
+
+<!-- ============================================================
+     USER PORTAL
+     ============================================================ -->
+<dialog class="modal modal-wide modal-full" id="userPortalModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">MY ACCOUNT 👤</p>
+  <h3 id="userPortalTitle">Welcome back, <span id="userPortalName"></span></h3>
+  <div class="user-tabs">
+    <button class="user-tab is-active" data-user-tab="dashboard" type="button">📊 Dashboard</button>
+    <button class="user-tab" data-user-tab="orders" type="button">🧾 Orders</button>
+    <button class="user-tab" data-user-tab="wishlist" type="button">❤️ Wishlist</button>
+    <button class="user-tab" data-user-tab="addresses" type="button">📍 Addresses</button>
+    <button class="user-tab" data-user-tab="profile" type="button">👤 Profile</button>
+  </div>
+
+  <!-- Dashboard -->
+  <section id="userTab-dashboard" class="user-tabpanel">
+    <div class="user-stats">
+      <div class="stat-card"><span class="stat-icon">🧾</span><div class="stat-value" id="userTotalOrders">0</div><div class="stat-label">Total Orders</div></div>
+      <div class="stat-card"><span class="stat-icon">📦</span><div class="stat-value" id="userActiveOrders">0</div><div class="stat-label">Active Orders</div></div>
+      <div class="stat-card"><span class="stat-icon">❤️</span><div class="stat-value" id="userWishlistCount">0</div><div class="stat-label">Wishlist Items</div></div>
+      <div class="stat-card"><span class="stat-icon">📍</span><div class="stat-value" id="userAddressCount">0</div><div class="stat-label">Saved Addresses</div></div>
+    </div>
+    
+    <div class="user-section">
+      <h4>Active Orders</h4>
+      <div id="userActiveOrders"></div>
+    </div>
+    <div class="user-section">
+      <h4>Order History</h4>
+      <div id="userPastOrders"></div>
+    </div>
+  </section>
+
+  <!-- Orders (redundant with dashboard but separate tab) -->
+  <section id="userTab-orders" class="user-tabpanel" hidden>
+    <div class="user-section">
+      <h4>Active Orders</h4>
+      <div id="userOrdersActive"></div>
+    </div>
+    <div class="user-section">
+      <h4>Order History</h4>
+      <div id="userOrdersPast"></div>
+    </div>
+  </section>
+
+  <!-- Wishlist -->
+  <section id="userTab-wishlist" class="user-tabpanel" hidden>
+    <div class="user-section">
+      <h4>Your Wishlist</h4>
+      <div id="userWishlistGrid" class="wishlist-grid"></div>
+    </div>
+  </section>
+
+  <!-- Addresses -->
+  <section id="userTab-addresses" class="user-tabpanel" hidden>
+    <div class="panel-head"><h4>Saved Addresses</h4><button class="btn btn-primary" id="addAddressBtn" type="button">＋ Add Address</button></div>
+    <div id="userAddressesList"></div>
+  </section>
+
+  <!-- Profile -->
+  <section id="userTab-profile" class="user-tabpanel" hidden>
+    <div class="user-section">
+      <h4>Profile</h4>
+      <form id="profileForm" class="form-grid">
+        <label>Full name<input id="profileName" name="name" required maxlength="100"></label>
+        <label>Email<input id="profileEmail" name="email" type="email" required readonly></label>
+        <label>Phone<input id="profilePhone" name="phone" maxlength="20" placeholder="Optional"></label>
+        <label>Role<output id="profileRole"></output></label>
+        <label>Member since<output id="profileSince"></output></label>
+        <button class="btn btn-primary btn-block" type="submit">Save Profile</button>
+      </form>
+    </div>
+    <div class="user-section">
+      <h4>Change Password</h4>
+      <form id="passwordForm" class="form-grid">
+        <label>Current password<input id="currentPassword" name="current" type="password" required minlength="8"></label>
+        <label>New password<input id="newPassword" name="new" type="password" required minlength="8" autocomplete="new-password"></label>
+        <button class="btn btn-primary btn-block" type="submit">Update Password</button>
+      </form>
+    </div>
+  </section>
+</dialog>
+
+<!-- Address Modal -->
+<dialog class="modal" id="addressModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">ADDRESS</p>
+  <h3 id="addressModalTitle">Add Address</h3>
+  <form id="addressForm" class="form-grid">
+    <label>Label<input name="label" required maxlength="20" placeholder="Home / Office"></label>
+    <label>Full name<input name="name" required maxlength="100"></label>
+    <label>Phone<input name="phone" required maxlength="20" placeholder="01XXXXXXXXX"></label>
+    <label>Address<textarea name="address" required maxlength="300" rows="2" placeholder="House, road, area"></textarea></label>
+    <label class="checkbox-label"><input name="is_default" type="checkbox"> Set as default</label>
+    <button class="btn btn-primary btn-block" type="submit">Save Address</button>
+  </form>
+</dialog>
+
+<!-- User Complaint Modal -->
+<dialog class="modal" id="userComplaintModal">
+  <form method="dialog" class="modal-head-row"><button class="iconbtn" aria-label="Close">✕</button></form>
+  <p class="kicker">REPORT PROBLEM</p>
+  <h3>Help us fix it</h3>
+  <p class="modal-sub" id="userComplaintOrder"></p>
+  <form id="userComplaintForm">
+    <label>What's the problem?
+      <select id="userComplaintCat"><option value="product">A product (wrong/damaged/missing)</option><option value="delivery">The delivery</option></select>
+    </label>
+    <label>Tell us what happened<textarea id="userComplaintMsg" rows="4" required minlength="10" maxlength="1000" placeholder="At least 10 characters, please."></textarea></label>
+    <p class="form-error" id="userComplaintError" hidden></p>
+    <button class="btn btn-primary btn-block" type="submit">Send to owner →</button>
+  </form>
+</dialog>
+
+<!-- notification dropdown -->
+<div class="bellpanel" id="bellPanel" hidden>
+  <div class="bellpanel-head"><strong>Notifications</strong><button class="textbtn" id="bellMarkAll" type="button">Mark all read</button></div>
+  <div id="bellList"></div>
+</div>
+
+<!-- 3D Admin Visualization Container (hidden, rendered in dashboard) -->
+<div id="admin3dViz" class="admin-3d-viz" hidden></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+</body>
+</html>
